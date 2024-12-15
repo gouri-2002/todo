@@ -1,0 +1,68 @@
+
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="full-height">
+    <!-- Model -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-theme="dark">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5 text-white" id="exampleModalLabel"><i class="bi bi-exclamation-octagon text-danger me-2"></i>Are you sure to reset todo?</h1>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body text-white">
+            All the saved todo will be deleted!!
+            </div>
+            <div class="modal-footer border-0 mx-auto">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <a href="{% url 'todo-reset' %}"><button type="button" class="btn btn-danger">Reset</button></a>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-arrow-clockwise position-absolute top-0 start-0 p-3 fs-2 text-white"></i></a>
+    <a href="{% url 'signout' %}"><i class="bi bi-box-arrow-right position-absolute top-0 end-0 p-3 pe-4 fs-2 text-white"></i></a>
+    <div class="container">
+        <h1 class="text-center p-4 title-grad">WELCOME {{request.user | upper}}</h1>
+       
+        <div class="w-75 border-dark-subtle rounded task-container-shadow mx-auto mt-5 p-4 bg-dark">
+
+            <div class="creat-box">
+                <form action="" method="post">
+                    {%csrf_token%}
+        
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Enter todos..." aria-label="Recipient's username" aria-describedby="button-addon2" data-bs-theme="dark" name="title">
+                        <button class="btn btn-todo bg-grad text-white" type="submit" id="button-addon2">ADD</button>
+                    </div>
+                      
+                    {% for todo in data %}
+                    <div>
+                        <div class="bg-todo mb-2 p-2 rounded d-flex justify-content-between">
+                            <div>
+                                {% if todo.status %}
+                                <i class="bi bi-caret-right-fill me-2 text-grad"></i><span class="done-task text-decoration-line-through">{{todo}}</span><i class="bi bi-check2-circle ms-2 text-danger-emphasis"></i>
+                                {% else %}
+                                <i class="bi bi-caret-right-fill me-2 text-grad"></i>{{todo}}
+                                {% endif %}
+                            </div>
+                            <div>
+                                {% if not todo.status %}
+                                <a href="{% url 'todo-update' todo.id %}" class="text-success"><i class="bi bi-check-square"></i></a>                 
+                                {% endif %}
+                                <a href="{% url 'todo-delete' todo.id %}" class="text-danger"><i class="bi bi-x-square"></i></a>                 
+                            </div>
+                        </div> 
+                    </div>
+                    {% endfor %}
+        
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

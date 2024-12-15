@@ -1,0 +1,32 @@
+
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="container full-height item-center">
+    <div class="col-md-4 shadow rounded-4 p-0 w-25 bg-dark mx-auto mt-5">
+        <div class="w-100">
+            <h2 class="title text-center mb-0 bg-grad text-light p-4 rounded-top-4">{{action}}</h2>
+            <div class="p-4 pb-3">
+                <form action="" method="post" data-bs-theme="dark">
+                    {% csrf_token %}
+                    {% for f in form %}
+                    {{f}}
+                        {% if f == form.username and action == 'Signup' %}
+                        <small class="form-text d-inline-block mb-3 ms-1" style="font-size: 9px;"><i class="bi bi-info-circle"></i> {{ form.username.help_text }}</small>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    <div class="d-grid col-9 mx-auto">
+                        <button class="btn bg-grad text-light my-2 rounded-5" type="submit">{{action}}</button>
+                    </div>
+                    {% if action == 'Signup' %}
+                        <p class="text-center mt-2 text-dark-emphasis">{{text}} <a href="{% url 'signin' %}" style="text-decoration: none;">{{alt_action}}</a></p>
+                    {% else %}
+                        <p class="text-center mt-2 text-dark-emphasis">{{text}} <a href="{% url 'signup' %}" style="text-decoration: none;">{{alt_action}}</a></p>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
